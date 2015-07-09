@@ -4,4 +4,6 @@ images/
 *jpg
 *csv
 *~
+.DS_Store
+*.log
 update_model.sh

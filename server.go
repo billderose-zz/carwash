@@ -30,7 +30,7 @@ type observations struct {
 }
 
 func mainHandler(nImages int, c *mgo.Collection) http.HandlerFunc {
-	tmpl, err := template.ParseFiles("main.html")
+	tmpl, err := template.ParseFiles("html/main.html")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -79,6 +79,14 @@ func addObservation(c *mgo.Collection, o *observation) {
 	}
 }
 
+func aboutHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("html/about.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	tmpl.Execute(w, nil)
+}
+
 func main() {
 	f, err := os.OpenFile("server.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
@@ -106,6 +114,7 @@ func main() {
 	http.HandleFunc("/images/", func(w http.ResponseWriter, r *http.Request) { // serve images
 		http.ServeFile(w, r, r.URL.Path[1:])
 	})
+	http.HandleFunc("/about", aboutHandler)
 	http.ListenAndServe(":"+Port, nil)
 	log.Println("Setup complete, server running on port ", Port)
 }

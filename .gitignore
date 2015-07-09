@@ -1,0 +1,7 @@
+images/
+.idea/
+*JPG
+*jpg
+*csv
+*~
+update_model.sh

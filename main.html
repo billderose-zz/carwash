@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<html lang="en-US">
+  <style>
+    form { 
+      font-family: "Courier New", Courier, monospace;
+      font-size: 1em;
+      display: block;
+      margin-top: 1em;
+      margin-right: 2em;
+      float:left; 
+    }
+  </style>
+  <head>
+    <title>Carwash</title>
+  </head>
+  <body>
+    <img src="/images/{{.}}.JPG" alt="" style="width: 70%; height: 70%">
+    <form action="/" method="post">
+      # Of Cars: <input type="number" name="label" autofocus="autofocus">
+      <input type="hidden" name="id" value="{{.}}">
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

@@ -6,39 +6,40 @@
 nav {
     line-height:30px;
     background-color:#eeeeee;
-    height:300px;
-    width:100px;
+    height:600px;
+    width:120px;
     float:left;
-    padding:5px;	      
+    padding:5px;
+    margin-top: 15px;
 }
 section {
-    width:350px;
+    width:1000px;
+    height:1000px;
     float:left;
-    padding:10px;	 	 
-}
-footer {
-    background-color:black;
-    color:white;
-    clear:both;
-    text-align:center;
-    padding:5px;	 	 
+padding:10px;
+margin-top: 15px;
 }
 </style>
 </head>
 <title>Carwash</title>
 <body>
 <nav>
-About<br>
+<!---> About<br>
 Classify images<br>
+</!--->
 </nav>
 <section>
-<h1>London</h1>
- <img src="/images/{{.}}.JPG" alt="" style="width: 70%; height: 70%">
+  <p>
     <form action="/" method="post">
-      # Of Cars: <input type="number" name="label" autofocus="autofocus">
-      <input type="hidden" name="id" value="{{.}}">
+      Please enter the number of cars you see in line for the carwash:
+      <input type="number" name="label" autofocus="autofocus">
       <input type="submit" value="Submit">
+      <input type="hidden" name="id" value="{{.}}">
     </form>
+  </p>
+  <p>
+    <img src="/images/{{.}}.JPG" alt="" style="width: 70%; height: 70%">
+  </p>
 </section>
   </body>
 </html>

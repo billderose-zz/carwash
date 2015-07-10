@@ -85,23 +85,31 @@
               <input type="hidden" name="id" value="{{.}}">
             </form>
           </div>
-	  <br>
+          <br>
           <div class="col-md-6 col-md-offset-3">
             <div class="well text-left">
               Keep in mind that our view
               is obstructed. When one car is visible beyond the fence, there are
               often 1-2 cars ahead in line but out of sight. A good
               rule of thumb is <em># of visible cars +
-              U</em>, where <em>U~</em><strong>Uniform</strong><em>({1, 2})</em>.
+              U</em>, where
+  <em>U~</em><strong>Uniform</strong><em>({1, 2})</em>.
             </div>
           </div>
         </div>
         <!-- /.col-lg-12 -->
+	<div id="diagrams" style="height:250px;width:400px;float:left;">
+        <canvas id="confusion" width="1000" height="250" style="border:0px solid #c3c3c3;">
+          Your browser does not support the HTML5 canvas tag.
+        </canvas>
       </div>
+      
+      </div>
+      
       <!-- Footer -->
       <footer>
         <div class="row">
-          <div class="col-lg-12">
+          <div class="col-lg-12 text-center">
             <p>Copyright &copy; BDR 2014</p>
           </div>
         </div>

@@ -1,7 +1,7 @@
 #!/bin/bash
 shopt -s nocaseglob # case insensitive pattern matching
 a=0
-for i in *.JPG; do
+for i in *.jpg; do
   new=$(printf "%d.JPG" "$a")
   mv -- "$i" "$new"
   let a=a+1

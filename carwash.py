@@ -5,7 +5,7 @@ loadModel = False
 image_path = "./images"
 
 
-sf = gl.image_analysis.load_images(image_path, "auto", with_path=False, recursive=True, random_order=False)
+sf = gl.image_analysis.load_images(image_path, "auto", with_path=False, recursive=False, random_order=False)
 sf["image"] = gl.image_analysis.resize(sf["image"], 800, 800, 3)
 sf["id"] = gl.SArray(range(len(sf["image"])))
 
@@ -17,13 +17,14 @@ train, test = sf.random_split(0.8)
 if not loadModel:
     nnet = gl.deeplearning.create(train, target='label', features=["image"])
     m = gl.neuralnet_classifier.create(train, target='label', features=["image"], network=nnet,
-                                       metric=['accuracy', 'recall@2'], validation_set=test, max_iterations=3)
+                                       metric=['accuracy', 'recall@2', 'precision', "fdr", "fp"], validation_set=test, max_iterations=3)
     m.save("./gl.carwash.model")
 else:
     m = gl.load_model("./gl.carwash.model")
 
 print m.evaluate(test)
 print m.predict(test)
+print gl.evaluation.confusion_matrix(test["label"], m.predict)
 
 
 def similarity(net, im1, im2):

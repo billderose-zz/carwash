@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -12,7 +13,6 @@ import (
 	"path/filepath"
 	"strconv"
 	"time"
-//"encoding/json"
 )
 
 const (
@@ -21,36 +21,38 @@ const (
 )
 
 type observation struct {
-	Id int `json:"id"`
+	Id    int `json:"id"`
 	Label int `json:"label"`
 }
 
 type observations struct {
-	Id     int
-	Labels []int
+	Id     int   `json:"id"`
+	Labels []int `json:"label"`
 }
 
 func indexHandler(nImages int, c *mgo.Collection) http.HandlerFunc {
 	tmpl, err := template.ParseFiles("index.html")
 	if err != nil {
 		log.Fatal(err)
-	}	
+	}
 	return func(w http.ResponseWriter, r *http.Request) {
-		r.ParseForm()
-		if err := tmpl.Execute(w, rand.Intn(nImages)); err != nil {
-			log.Fatal(err)
-		}
-		if r.Method == "POST" {
+		if r.Method == "GET" {
+			if err := tmpl.Execute(w, rand.Intn(nImages)); err != nil {
+				log.Fatal(err)
+			}
+		} else if r.Method == "POST" {
 			if observation, err := parsePost(r); err != nil {
 				log.Println("Error parsing observation classification: ", err)
 			} else {
 				addObservation(c, observation)
 			}
+			json.NewEncoder(w).Encode(observation{Id: rand.Intn(nImages)})
 		}
 	}
 }
 
 func parsePost(r *http.Request) (*observation, error) {
+	r.ParseForm()
 	if r.PostFormValue("label") == "" {
 		return nil, errors.New("No image label")
 	}

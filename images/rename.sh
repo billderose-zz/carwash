@@ -6,9 +6,11 @@ shopt -s nocaseglob # case insensitive pattern matching
 a=0
 for i in *.jpg; do
   new=$(printf "%d.JPG" "$a")
-  mv -- "$i" "../$new"
+  mv "$i" "../$new"
   let a=a+1
 done
 shopt -u nocaseglob # case sensitive pattern matching
 cd ..
 rm -rf temp
+cd ..
+rm G*.JPG

@@ -115,7 +115,7 @@ func main() {
 
 	log.Print("Loading images.........")
 	rand.Seed(time.Now().UnixNano())
-	files, err := filepath.Glob("images/[0-9]*.JPG")
+	files, err := filepath.Glob("images/[0-9]*JPG")
 	if err != nil {
 		log.Fatalln("Unable to import images: ", err)
 	}

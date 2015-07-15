@@ -1,16 +1,15 @@
 #!/bin/bash
-mkdir temp
-cp *.JPG temp/
-cd temp/
 shopt -s nocaseglob # case insensitive pattern matching
-a=0
+a=$(ls [0-9]*jpg | sort -rn | awk '{printf "%d", $1 + 1; exit}') # find the highest numbered file
 for i in *.jpg; do
-  new=$(printf "%d.JPG" "$a")
-  mv "$i" "../$new"
-  let a=a+1
+  cmp=${i%%.*} # drop the file extension
+  if [ "$cmp" -lt "$a" ]
+  then
+      continue
+  else
+      new=$(printf "%d.JPG" "$a")
+      mv "$i" "$new"
+      let a=a+1
+  fi
 done
 shopt -u nocaseglob # case sensitive pattern matching
-cd ..
-rm -rf temp
-cd ..
-rm G*.JPG

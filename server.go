@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -30,14 +31,26 @@ type observations struct {
 	Labels []int `json:"label"`
 }
 
-func indexHandler(nImages int, c *mgo.Collection) http.HandlerFunc {
+func randomLabel(imagePaths []string) int {
+	n := rand.Intn(len(imagePaths))
+	imageLab := strings.TrimPrefix(imagePaths[n], "images/")
+	imageLab = strings.TrimSuffix(imageLab, ".JPG")
+	if i, err := strconv.Atoi(imageLab); err != nil {
+		log.Println("Unable to generate image label, ", err, ". Loading 47.JPG.")
+		return 47
+	} else {
+		return i
+	}
+}
+
+func indexHandler(imagePaths []string, c *mgo.Collection) http.HandlerFunc {
 	tmpl, err := template.ParseFiles("index.html")
 	if err != nil {
 		log.Fatal(err)
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			if err := tmpl.Execute(w, rand.Intn(nImages)); err != nil {
+			if err := tmpl.Execute(w, randomLabel(imagePaths)); err != nil {
 				log.Fatal(err)
 			}
 		} else if r.Method == "POST" {
@@ -46,7 +59,7 @@ func indexHandler(nImages int, c *mgo.Collection) http.HandlerFunc {
 			} else {
 				addObservation(c, observation)
 			}
-			json.NewEncoder(w).Encode(observation{Id: rand.Intn(nImages)})
+			json.NewEncoder(w).Encode(observation{Id: randomLabel(imagePaths)})
 		}
 	}
 }
@@ -102,7 +115,7 @@ func main() {
 
 	log.Print("Loading images.........")
 	rand.Seed(time.Now().UnixNano())
-	files, err := filepath.Glob("images/*.JPG")
+	files, err := filepath.Glob("images/[0-9]*.JPG")
 	if err != nil {
 		log.Fatalln("Unable to import images: ", err)
 	}
@@ -122,7 +135,7 @@ func main() {
 	http.HandleFunc("/fonts/", func(w http.ResponseWriter, r *http.Request) { // serve css attributes
 		http.ServeFile(w, r, r.URL.Path[1:])
 	})
-	http.HandleFunc("/", indexHandler(len(files), collection))
+	http.HandleFunc("/", indexHandler(files, collection))
 
 	log.Println("Setup complete, server starting on port ", Port)
 	http.ListenAndServe(":"+Port, nil)

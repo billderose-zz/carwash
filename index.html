@@ -53,20 +53,20 @@
           <h2>About</h2>
           <p>We are interested in the flow of traffic at a carwash near our house.
             To measure this, we photograph the queue at set intervals
-            and associate with each image a label, the number of cars in line, and a timestamp.
-            We then train a classifier to predict the number of cars in line given the image as input.
-            Ultimately, we will extract time series
-            to determine if there are any patterns in usage. For instance, do more
-            people wash their car on the weekend? Or, do we see an
-            increase in the number of carwashes following rain?
-            In addition, we'll periodically update this page with statistics about the performance of our model.
+            and associate with each image a label (i.e. the number of cars in line) and a timestamp.
+            We then train a <a
+	  href="https://dato.com/products/create/docs/graphlab.toolkits.deeplearning.html">classifier</a>
+	  to predict the number of cars in line given the image as input.
+            Ultimately, we will extract a time series
+            to determine if there are any patterns in usage. For
+	  instance, higher volume on the weekend or lower volume after
+	  a downpour. In addition, we'll periodically update this page
+	  with our model's performance statistics.
           </p>
-          <p> The key phrase in the above paragraph is "sufficient
-            confidence". We need as
-            much training data as possible, but before we try to apply more
-            advanced techniques such as autotagging, we have to manually label our
-            images. If you'd like to contribute to our little project,
-            please tag away!
+          <p> We need as
+            much training data as possible, especially before we try to apply more
+            advanced techniques such as autotagging. So if you'd like
+	   to contribute by labeling an image or two, then tag away!
           </p>
         </div>
         <!-- /.col-md-4 -->

@@ -1,20 +1,24 @@
 import graphlab as gl
 from statistics import mode
-import re
+import os
 
 loadModel = False
 image_path = "./images"
 
 
 sf = gl.image_analysis.load_images(image_path, "auto", with_path=True, recursive=False, random_order=False)
-# sf["image"] = gl.image_analysis.resize(sf["image"], 800, 800, 3)
-# sf["id"] = sf["path"].apply(lambda x: remove path, ).astype(int)
-sf["id"] = gl.SArray(range(len(sf["image"])))
+sf["image"] = gl.image_analysis.resize(sf["image"], 800, 800, 3)
+sf["id"] = sf["path"].apply(lambda path: os.path.basename(path)[:-4]).astype(int)
+print sf["id"]
+# sf["id"] = gl.SArray(range(len(sf["image"])))
 
 labels = gl.SFrame("./labels.csv")
+print labels
+print "Joining..."
 sf = sf.join(labels, on="id", how="right")  # only include images with labels
 sf["label"] = sf.apply(lambda row: int(mode(row["labels"]))) # use mode label as authoritative label
-
+print "Labeled"
+print sf["label"]
 
 train, test = sf.random_split(0.8)
 if not loadModel:

@@ -109,7 +109,6 @@
           type: "POST",
           data: $("#observation").serializeArray(),
           success : function(response) {
-              // get new image from response and set photo
            var id = JSON.parse(response).id;
            $(".img-rounded").attr("src", "/images/" + id + ".JPG")
            $("#id").attr("value", id);

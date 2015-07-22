@@ -32,6 +32,7 @@ type observations struct {
 }
 
 func randomLabel(imagePaths []string) int {
+	rand.Seed(time.Now().UnixNano())
 	n := rand.Intn(len(imagePaths))
 	imageLab := strings.TrimPrefix(imagePaths[n], "images/")
 	imageLab = strings.TrimSuffix(imageLab, ".JPG")
@@ -114,7 +115,6 @@ func main() {
 	collection := session.DB("carwash").C("classification_labels")
 
 	log.Print("Loading images.........")
-	rand.Seed(time.Now().UnixNano())
 	files, err := filepath.Glob("images/[0-9]*JPG")
 	if err != nil {
 		log.Fatalln("Unable to import images: ", err)

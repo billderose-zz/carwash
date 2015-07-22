@@ -50,6 +50,7 @@ func indexHandler(imagePaths []string, c *mgo.Collection) http.HandlerFunc {
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
+			rand.Seed(time.Now().UnixNano())
 			if err := tmpl.Execute(w, randomLabel(imagePaths)); err != nil {
 				log.Fatal(err)
 			}
@@ -114,7 +115,6 @@ func main() {
 	collection := session.DB("carwash").C("classification_labels")
 
 	log.Print("Loading images.........")
-	rand.Seed(time.Now().UnixNano())
 	files, err := filepath.Glob("images/[0-9]*JPG")
 	if err != nil {
 		log.Fatalln("Unable to import images: ", err)
